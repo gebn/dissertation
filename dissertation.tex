@@ -1,0 +1,309 @@
+\documentclass[12pt]{bhamdissertation}
+
+%load any additional packages
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[UKenglish]{babel}
+\usepackage[autostyle]{csquotes}
+\usepackage[nodayofweek]{datetime}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[backend=biber,bibencoding=utf8,style=ieee,sorting=none]{biblatex}
+\usepackage[hidelinks]{hyperref}
+\usepackage[toc,page]{appendix}
+\usepackage{lipsum}
+
+\titleformat{\paragraph}{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+%input macros (i.e. write your own macros file called mymacros.tex 
+%and uncomment the next line)
+%\include{mymacros}
+
+\title{Equaliser}
+\author{George Brighton}             %your name
+\college{School of Computer Science}  %your college
+\degree{MEng Computer Science \& Software Engineering}     %the degree
+
+\addbibresource{references.bib}
+\bibliography{references}        %use a bibtex bibliography file refs.bib
+%\bibliographystyle{plain}  %use the plain bibliography style
+
+%end the preamble and start the document
+\begin{document}
+
+%this baselineskip gives sufficient line spacing for an examiner to easily
+%markup the thesis with comments
+\baselineskip=18pt plus1pt
+
+%set the number of sectioning levels that get number and appear in the contents
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+
+\maketitle                  % create a title page from the preamble info
+
+\begin{romanpages}          % start roman page numbering
+
+\tableofcontents
+
+% TODO should be possible to move contents line to class file
+% http://tex.stackexchange.com/a/258973 for why 3 things are needed
+\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{Abstract}
+\begin{abstract}
+\lipsum[1-1] % TODO
+\end{abstract}
+
+\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{Acknowledgements}
+\begin{acknowledgements}
+\lipsum[2-2] % TODO
+\end{acknowledgements}
+
+\end{romanpages}            % end roman page numbering
+
+
+
+\iffalse
+\chapter{Further Background}
+
+\section{Ticket Purchase}
+
+Regardless of the type of event, the first step to attending is finding a ticket vendor. There may not be only one, for example the organisers of Reading Festival in 2017 are selling tickets through numerous official vendors, including Ticketmaster and See Tickets \autocite{R16}.
+
+\subsection{Sources}
+
+\subsubsection{Official Partners}
+
+Official partners are chosen by organisers to sell new tickets for their event. Ticketmaster, DICE and See Tickets are amongst the most well-known distributors who normally act as official partners for many different types of event, including theatre performances, concerts, and sport.
+
+\paragraph{Release}
+
+This section describes how tickets are made available in the case of Ticketmaster, who is perhaps the largest distributor \autocite{WF16}. Tickets are released to the general public at an advertised time, with any online visitors arriving before this shown a countdown that automatically refreshes as soon as it reaches zero. Once the user has selected their tickets and passed a reCAPTCHA test, they are placed in queue until they become available. In the case of busy events, many will not make it past this stage. If tickets are available, or the user is lucky enough to make it to the front of the queue, they begin the purchase process. There is normally a three minute time limit to complete this, otherwise the user is sent to the back of the queue to wait again \autocite{T161}.
+
+Event organisers usually impose a limit on the number of tickets that a customer can purchase. This is typically eight or, more increasingly, four, but it can be as low as two if the event in question is small and particularly exclusive. These constraints exist to prevent individuals from buying up large quantities of tickets, however, as the quantity is tied to a credit card, it is possible for those with multiple cards to check out multiple times, accumulating potentially several dozen tickets.
+
+Aside from the technicalities of purchasing tickets, it is not uncommon for the websites of even major ticket distributors to crash during major releases. Take That's 2010 tour brought down most ticketing websites involved and jammed phone lines as thousands of eager fans attempted to buy tickets as soon as they went on sale \autocite{B10}. Each time, this is due to ``unprecedented'' demand for tickets, despite these distributors knowing exactly how many seats are available, and how much traffic there was during the last tour. 
+
+\paragraph{Fees}
+
+Fees are a major cause of annoyance amongst fans, and the source of many complaints. Comedian Sarah Millican recently went as far as boycotting certain venues on her tour as she felt their distribution arm's fees were too high \autocite{C12}. There are four categories \autocite{T163}; for examples of fees levied, see appendix \ref{appendix:ticket_fees_graph}.
+
+\begin{description}
+    \item[Service Charge] This covers the merchant's selling costs, and can depend on the payment method and whether it is an online or phone purchase \autocite{T162}.
+    \item[Processing Charge] Effectively identical to the service charge, this is for ``processing the order''.
+    \item[Shipping Charge] This is charged irrespective of whether tickets are collected at the box office on the day, printed \autocite{P12}, or indeed posted. The exact amount depends on the ``delivery'' method.
+    \item[Building Facility Charge] A fixed amount added to all tickets regardless of class. This goes to the venue hosting the event.
+\end{description}
+
+Founded in 2014, DICE is a relative newcomer to the ticketing industry, but has been making disruptive progress. Selling itself as putting fans and artists first, it partners with artists to be the exclusive official distributor for their events. Tickets are sold at face value, with no fees, with revenue coming directly from the artist. Completely mobile-based with no web interface, tickets are electronic, linked to an individual's phone number or Facebook account. If a customer changes their mind after purchase, they can return their ticket for a full refund, where it goes to someone in a waiting list for tickets.
+
+\subsubsection{Box Office}
+
+The vast majority of venues have their own box office, which allows tickets to be purchased in person or via phone. Unlike online vendors, box offices have a waiting list that customers can request to be added to \autocite{Le16}. If the venue decides to release more tickets for an event, those on this list may be prioritised.
+
+The key downside to is speed. If an event is popular, it is futile to try to call a venue at the point of release, as they will have likely sold out by the time a buyer gets through, as they did when tickets for Phil Collins's 2017 stint at the Royal Albert Hall sold out in 15 seconds \autocite{F16}.
+
+\subsubsection{Re-sellers}
+
+Re-sellers form the secondary market for tickets, that is, they only sell tickets that have already been bought. The seller could be an individual, a tout or a dedicated company, and tickets can be sold for face value or profit.
+
+\paragraph{Get Me In}
+
+Get Me In is owned by Ticketmaster, and allows anyone to resell any ticket for any price \autocite{T164}. Tickets are covered by Ticketmaster's guarantee, ensuring invalid tickets will be replaced or refunded in case of any issues.
+
+\paragraph{Twickets}
+
+Twickets markets itself as a platform for fans to sell tickets to other fans \autocite{Tw161}. Improving on Get Me In, individuals can list tickets for sale at face value, plus up to 15\% to cover booking fees, however they are encouraged to keep prices low to increase the likelihood of finding a buyer - and Twickets earning their 10\% buyer fee \autocite{Tw16}. Both parties benefit from PayPal's respective protection schemes, and every ticket is moderated to prevent touts. Twickets is the official resale platform for major artists like Adele and You Me At Six, who have both been vocal in their anger at touts.
+
+To prevent abuse, the ticket price must be selected from a range of known prices for the event. It is possible to input another value, however this immediately arouses suspicion, and Twickets will reject the offer is there is any doubt about the legitimacy of the price \autocite{Tw162}.
+
+\paragraph{Touts}
+
+Outright touts are the most informal and egregious re-sellers. Tickets are usually purchased in cash outside the venue on the day of the event for hugely inflated prices with no guarantee as to their authenticity. They prey on the most desperate of fans, as only these individuals would be willing to take the risk.
+
+\subsection{Presale}
+
+In the context of live music, many artists have a club that fans can join in order to access exclusive benefits, including early access to tour tickets. A set number of tickets are made available to fans through a presale, which usually happens a couple of days before tickets go on sale to the general public. Fans receive a unique code distributed through the club, which the official partner's website prompts for before users are permitted to proceed with their purchase. Once tickets for the presale are sold out, no more go on sale, so if a fan misses out, they have to join the sale for the general public \autocite{T16}. To prevent abuse of the system by both touts and people only interested in an access code, there is usually a minimum length of time an individual must have been a member of the fan club in order to be eligible for the presale.
+
+\section{Ticket Technology}
+
+\subsection{Paper}
+
+Paper tickets are either sent to the billing address via post, or are printed by the customer. In both cases, they have a barcode on them that is scanned at the venue. The scanner only permits one entry per ticket, so an attendee cannot pass the ticket back over the barrier in order to let a group of people through. Some paper tickets contain holograms, or are heat sensitive, to further prevent forgeries and copies, however these are largely useless as a result of the single entry rule. An individual can be trusted not to make a copy of their ticket, as there would be nothing to gain, therefore the only risk is someone else attempting to forge a ticket from scratch. To guard against this, tickets are typically branded with the buyer's name, the last four digits of the payment card, a booking reference and the ticket tier and a seat location if applicable.
+
+Although tickets contain information about the purchaser, there is rarely verification of this on entry. Officially, a re-seller of a ticket is supposed to send the distributor a letter saying that they consent to the new individual using the ticket, however in practice, this is rarely (if ever) done, as people are aware of the lack of verification. This can also apply to tickets left for collection at the box office: the buyer just needs to give the collector a letter of authorisation to collect their tickets, even if the buyer is not attending \autocite{S16}.
+
+\subsection{Paperless}
+
+Paperless tickets are something of a misnomer, as the attendee does not receive a ticket at all. Instead, they are required to bring the payment card and a valid government-issued photo ID to the venue \autocite{T165}. Unfortunately this has several drawbacks. The attendee has to bring a physical card, so services including Monzo and Revolut will not work. In addition, if an attendee's card is due to expire in the time between purchasing the tickets and attending the event, they must contact the vendor who will transfer the booking over to the attendee's new card, provided that the names and addresses of the cards match. This is the only exception to the non-transferable rule.
+
+At the venue, details of each booking are manually checked to ensure details are consistent. The payment card is swiped, producing a name and number of tickets purchased. If the name matches the photo ID, the cardholder and an additional number of entirely anonymous guests are let through. This mandates that entire groups enter the venue together \autocite{T166}, potentially causing conflict if an individual is delayed. Venues also impose a rule that the cardholder must have a ticket. This arguably prevents a tout arriving at the venue to let in a group of people and then leave, however if their group and ticket markup were large enough, it may not hurt profits enough to act as discouragement - there is nothing to stop the tout leaving as soon as they are through the barrier. A non-malicious practice this rule does prevent is gift purchase of tickets.
+
+The logic behind paperless tickets is to delegate security to the payment card and the photo ID, so verification of the purchaser is strong. However, entrance to the venue is manual - an attendant must verify identification and swipe the payment card for each buyer to know how many people to allow through the barrier. This is time consuming compared to the handling of paper tickets, where all the attendant has to do is scan the barcode of each person's ticket. Furthermore, there is nothing to tie guests to a booking, so a buyer can resell all tickets apart from their own. That is to say, an individual could for example buy eight tickets, resell seven at inflated prices, then meet these people at the venue and go in with them. Tickets on Viagogo have been listed with a disclaimer that ``buyers of the tickets for this event will be accompanied into the venue by the seller'' \autocite{MF16}. Therefore, in practice, paperless ticketing offers little protection against touts over paper tickets.
+
+\subsection{Wristbands}
+
+Wristbands are often used by larger venues in addition to paper or paperless tickets. Due to the venue sizes, there is the potential for individuals with less valuable tickets merging with those with higher value tickets after the initial barriers. As a result these venues implement several stages of verification between people entering the venue and getting to their designated area to view the performance. Wristbands are meant to speed up this process. For example, standing tickets for concerts are considered more valuable than seated tickets, so staff distribute wristbands to these people to enable venue staff to verify that only those with the correct tickets are able to enter the standing area, and no one receives a better experience than they paid for.
+
+\section{The Touting Industry}
+
+The key issue surrounding material so far is prevention of ticket touting, or the act of reselling tickets bought from licensed vendors, usually for profit. For example, recent \textit{Harry Potter and The Cursed Child} tickets had a face value of between £15 and £70, but were being resold on the secondary market for up to £8,000 \autocite{E16}. A form of arbitrage, touting is enabled by fans inevitably willing to pay more than tickets' face value as a result of their scarcity. Consequently, the only way of preventing the practice is to make it illegal, or far more preferably, impossible. This section summarises how it is carried out, what makes it possible to carry out, and argues the case for why something should be done about it.
+
+Unfortunately, there is no simple solution to the issue of touting, with many inherent conflicts of interest at play. Official partners are judged on their ability to sell out events as soon as possible, so the incentive to implement any anti-touting measures - thus slowing the flow of sales - is low. They implement minimal checks to combat automated ticket harvesting, such as reCAPTCHA \autocite{T14}, however these are not intended to guard against malicious humans. Some partners enforce a limit on how many tickets can be purchased per credit card, however these are usually imposed or at least lowered further by the event organisers. Unfortunately such measures are largely ineffective as touts simply use multiple credit cards and identities to purchase tickets \autocite{DJ16}.
+
+\subsection{Methods}
+
+When the phenomenon of touting was in its early stages, people would simply buy the maximum number of tickets they could. Now, due to huge demand for tickets and the need for a more reliable means of obtaining them, touts have been reported to use software, colloquially known as ``bots'', to rapidly and automatically purchase large numbers of tickets as soon as they become available \autocite{Davie16}. ``Spinner bots'' can be configured to buy tickets of a certain type using a pool of credit cards, polling the ticket vendor's website until they are available \autocite{Tic16}. In an effort to prevent this, Ticketmaster employ CAPTCHA technology, a challenge intended to only be passable by humans. However, there is evidence of these being ineffective at various points in time \autocite{AOW05}, and since then the technology has been a game of whack-a-mole. In 2007, Ticketmaster filed an injunction against a vendor of ticket buying software, RMG Technologies, for using its website ``in excess of the authorization . . . grant[ed] through the website's Terms of Use'' \autocite{T09}. In effect, Ticketmaster was admitting the vulnerability of its site to automation, despite CAPTCHAs, and using the courts to prevent RMG distributing its application \autocite{Sam16}. This year, Kaspersky labs have denounced the latest CAPTCHA iteration, reCAPTCHA, as easily defeatable \autocite{K16}, however even if this technology was secure, touts use the services of companies who hire human workers to complete the puzzles \autocite{Davie16}.
+
+\subsection{Enablers}
+
+Two key phenomena motivate touts to use the above methods to scoop up tickets. The first is re-sellers, taking the role of a facilitator. Ticket re-sellers earn a percentage of each sale in commission, thus higher prices directly contribute to increased revenue. Touts post their tickets on platforms including Seatwave, Get Me In, Viagogo and StubHub, setting prices far in excess of their face value. Tickets for Adele concerts in London in early 2016 had a face value of £85 but were resold on Get Me In for over £24000 (including almost £2000 in fees) and StubHub for over £23000 \autocite{JR16}. One could argue these sites are not directly responsible for the proliferation of touting, however the reality is not nearly as innocent. Re-sellers are critical in matching supply with demand, making it very easy for touters to reach a wide audience and increasing the likelihood of the finding a desperate fan.
+
+Similarly to official partners, re-sellers charge substantial fees for their service. Get Me In's buyer fees for a single Black Sabbath ticket being resold for £165 are £30.41 (18.4\%), excluding delivery. Viagogo goes a step further and charges both the buyer and seller a processing fee \autocite{V16, St13}. In September, Viagogo saw two tickets for a football match between Real Madrid and Barcelona listed for £196,155.94. If the tickets are sold, they will receive £40,000 in booking fees and around a 15\% commission from the seller \autocite{Dav16}.
+
+Knowing this, it comes as no surprise that re-sellers actively solicit touts. Get Me In has a pre-populated list of upcoming events, and sellers need only click on one of these and choose which zone the tickets are for (again selected from a drop down). The face value of the tickets must be provided, however it is not mandatory to provide a seat and row number, contrary to the Consumer Rights Act 2015. Despite having intimate knowledge of each venue's layout, Get Me In mysteriously allows sellers to state that seating information is not applicable to tickets within an exclusively seated zone. This is convenient, given the practice makes it much harder for event organisers to invalidate transferred tickets. There is even evidence that re-sellers have approached event promoters and managers for their inventory, offering a share of the commission \autocite{Da16}.
+
+Perhaps the most egregious case of reselling is that of Get Me In, who are the official re-seller of, and are owned by, Ticketmaster, who act as official partner to many events. Live Nation, the organisation behind both these companies, effectively has two bites of the cherry - one when tickets are originally bought, and again if they are resold. Last month, it was reported that Live Nation facilitated a gross transaction value of \$1.2B globally \autocite{H16}.
+
+Fans are understandably bitter when tickets sell out in minutes, only to appear almost immediately on reselling websites at a significant mark-up \autocite{Sa16}. It is important to note that their primary grievance is not missing out on tickets, but how they are being used for profit. Indeed, some events release their tickets in waves, so if a fan misses out in the first wave, they have another opportunity. It is of course still possible for touts to buy up the majority of tickets at the start of each wave, however fans will be placated by having had several chances.
+
+The second phenomenon is the lack of relationship between ticket and person, which allows free redistribution. Paper tickets are essentially freely transferable, and paperless tickets only authenticate the buyer, leaving all other individuals in the transaction anonymous, meaning they can be substituted freely. This is the core issue of touting. If there is a reliable way of tying an individual to a ticket at the point of purchase, and validating that connection upon entry to the venue, touting cannot exist. Unfortunately it is not this simple, and there are valid reasons why one might want to transfer a ticket. The issue then becomes how to allow this in such a way that it cannot be exploited by touts.
+
+\subsection{Irrelevance}
+
+Many pages have been written discussing the economics of ticket resale, with the argument to regulate it incredibly weak \autocite{C03}. In economic terms, the goods (tickets) are largely fungible within a given tier. They have a fixed and finite lifetime, and there only exists a limited supply. There is perfect information in the market, with willing touts, and willing buyers. Classical economists would argue there is no problem here to solve \autocite{C00}.
+
+\subsubsection{Acceptable Re-selling}
+
+Despite obvious issues with re-sellers, not all forms of touting are harmful. Strictly speaking, the practice of selling a ticket to a friend at face value if one cannot attend is without question touting, however it is neither in the interest of the event organiser nor the original ticket vendor to prevent this. The transfer of tickets to people who will be present ensures a lively atmosphere, and reduces the number of disappointed fans who missed out. Indeed, touts prey on spare tickets, offering to buy them from fans outside the venue at a fraction of face value, only to sell them on for much more. In terms of markup, these tickets are amongst the most lucrative touts can get their hands on.
+
+A May report commissioned by the government on the online secondary ticket market pointed out that a ban would simply shift activity underground. Rather than losing the advantages of reselling along with any hope of regulating its disadvantages, it is clear that the transfer process only needs to be controlled in order to prevent profit. Sites like DICE and Twickets are spearheading efforts to combat this abuse. One of the key issues explored by this paper is that of permitting innocent transfer of tickets, while preventing touts from exploiting these mechanisms for malicious purposes.
+
+\subsection{Pertinence}
+
+While the economic argument against ticket touting may be weak, the ethical argument is solid. Tickets ultimately find their way to fans, however the lengthened process and unfair selection causes unnecessary grief to dedicated fans. Touts ensure those willing to pay the highest price receive tickets over those waiting for their chance to go an event they have been looking forward to for possibly months. This in turn is bad for artists.
+
+\section{Prevention}
+
+\subsection{Seller Efforts}
+
+Official partners have been pushed by event organisers and often acts themselves to combat touting, however the efforts of well-established companies in the space can only be described as sluggish at best, and reluctant at worst. Ever motivated by profit, one cannot help but regard their efforts as box-ticking to placate stakeholders rather than driving real change.
+
+Some event organisers and vendors are taking precautionary measures to try to combat the problem of touts reselling tickets. In 2007, Glastonbury festival adopted photographic tickets; fans wishing to attend the festival had a 28 day window in which to submit their contact information and a passport-sized photograph of themselves. Those who were successful in obtaining tickets received a ticket with their photograph and information on it, in order to tie each ticket to a specific attendee, preventing resale \autocite{B07}.
+
+The Championships, Wimbledon handle their own ticket distribution, requiring applications for seats to be submitted by letter months in advance of the tournament each year. Only one application can be made per household, which is given the opportunity to purchase two tickets if successful. This system is obviously immune to abuse by software due to it being entirely asynchronous, however the majority of events do not have the resources to process every ticket application by hand, not to mention handwriting may discourage younger audiences. Similarly, the ticket limit makes abuse less worthwhile for touts, however there are many valid occasions where larger groups want to attend an event, particularly festivals. Although tickets are branded with the purchaser's name, this is not checked on entry, and increasing the per-application allocation would only tempt touts to abuse the system more.
+
+Wimbledon also has a separate debenture system, whereby an individual can purchase a seat on a court for a number of days of each tournament for 5 years \autocite{W16}. These tickets ``are freely transferable and can be sold on the open market'' \autocite{TCW16}, which does leave them wide open to abuse, and furthermore it is widely known that owners can make back most of their money by selling on tickets for days they do not wish to attend \autocite{N14}. Despite these two factors, there is only limited evidence to suggest widespread abuse. Despite the high cost, debentures are oversubscribed, and applications are manually verified \autocite{TCW16}. Such a high capital expenditure is unattractive to touts, who then have a large deficit for a number of years. Re-sellers instead target debenture holders, however there is much more limited potential for abuse here, and holders are savvy and know the value of their tickets, reducing the profit that can be made from them \autocite{W16}. It appears Wimbledon is willing to let this continue. These tickets are a way for the organisation to raise the capital required for improvements, most recently a roof for No.1 Court. A small fraction of 2,500 seats being sold for a slightly higher price, while removing the distribution overhead has likely been judged acceptable.
+
+\subsection{Law}
+
+In the UK, ticket touting for football matches is illegal \autocite{H94}, however there is currently no law preventing ticket touting for other events, such as concerts and theatre productions. The Consumer Rights Act of 2015 contains new legislation with regard to secondary ticketing, or ticket reselling \autocite{H15}. It requires anyone re-selling an event ticket via a resale website to provide the location of the seat, if applicable, as well as the face value of the ticket. It is important to note that this does nothing to prevent tickets from being resold at extortionate prices, but the buyer will be able to see the face value of the ticket so that they can make a judgement on whether the asking price is fair. Furthermore, being able to see the seat location means that the buyer can determine whether the asking price fairly reflects the location of the seats. Tickets in a section of seating very close to the stage may be more valuable than tickets further back in the auditorium, however if there is a restricted view then the buyer may expect to pay a lower price than for tickets in the same section with an unrestricted view.
+
+According to the Act, it is the responsibility of the seller and the resale website to ensure that this information is shown. Consumer group Which? carried out an investigation into whether this legislation was being enforced on secondary ticketing websites, and found that ``the rules were being repeatedly flouted on all the major secondary ticketing sites'' \autocite{DJ16}. Viagogo came under fire recently for advertising tickets for resale despite them not being publicly available yet; it is likely that fans would have snapped up the tickets in their eagerness to garner themselves a place at the event, with no guarantee of where their seats would be located \autocite{Davi16}.
+
+You Me At Six singer Josh Franceschi is not alone in calling for bots to be made illegal \autocite{Tr16}. The UK government is also considering such a law. While this will stop touts from using bots to scoop up large quantities of tickets, it will not prevent them employing humans to replace the job of the machines to buy up all of the tickets instead. The banning of bots would certainly make it more difficult for touts to purchase tickets in the quantities in which they do currently, however it will not by any stretch make it impossible for them to operate \autocite{S16}.
+
+Ticket touting is not just an issue in the UK; the US Senate has recently passed a bill that makes it illegal to buy up large quantities of tickets using a bot. The motion prohibits working around websites' rules regarding using bots for ticket purchases, and also selling tickets that have been purchased with this method \autocite{M16}. In Belgium, secondary ticketing is illegal, and Italy have recently moved to outlaw it after Live Nation, the company that own Ticketmaster, admitted to passing tickets directly for resale on Viagogo, another one of their companies \autocite{D16}.
+
+\subsection{Future}
+
+With the exception of DICE, the ticket distribution industry has not seen any major disruption in years. Major companies dominate unfair ticket distribution, with the occasional innovative startup trying to do something about it. It is a difficult issue to approach, as event organisers must trust a single, relatively inexperienced distributor to eradicate the possibility of circumventing controls. As soon as a single vulnerable provider touches tickets for an event, any protection from touting becomes futile.
+\fi
+
+\chapter{Mining properties of existing systems}
+
+The insights in this section are based squarely on the whitepaper \autocite{B17} I produced earlier in the project. It is clear that there is currently no complete solution to the problem of touting. This section qualitatively analyses the research in the previous section to identify attributes that are conducive and resistant to touting, and other notable features whose absence or presence would enhance a future ticket distribution system.
+
+\section{Single Distributor}
+
+In the very first paragraph of the previous summary, the fact that event organisers use multiple distributors is an issue. This would allow any protections offered by a perfect system to be circumvented by a vulnerable one. Malicious actors would simply use the latter. DICE identified this issue, and plugged the hole by making themselves the exclusive distributor of tickets for a given event. If two systems existed in future that were secure in isolation, using them together could introduce potential issues or opportunities for confusion, so in practice, one distributor should be used.
+
+Box offices are inherently at odds with this observation on several levels. If a venue's box office is to be its sole distributor of tickets, using a separate system for each venue would be a great inconvenience to fans and event organisers. If we make the reasonable assumption that a box office alone cannot handle the demand for tickets, then another distributor is needed, which means the box office must be removed to maintain the single source. Unfortunately, from a touting prevention perspective, box offices are pointless at best, and a subversive side-channel attack at worst.
+
+\subsection{Conflict of Interest}
+
+Given the rule of a sole distributor, companies will compete to win the business of being that distributor. To differentiate themselves, these firms can highlight the rate at which they sell tickets, and the total number of tickets sold, which may conflict with ensuring those tickets go to genuine fans. This can only be solved by removing all metrics related to the rate of ticket sales from a distributor's fee calculation. They should receive a set fee that is agreed in advance and independent of the number of tickets sold. Promotion must be distinct from processing.
+
+\section{Ticket Transferability}
+
+Plain paper tickets are inherently broken, as it is impossible to prevent a physical object from being transferred between two parties. Adding a name which is rarely validated does nothing to improve this situation. Paperless tickets were ostensibly introduced to combat this. The photo ID was an important improvement, however as already discussed, only the purchaser's identity is validated (if checked at all), leaving 3-7 tickets per credit card available for touting, and a tidy profit. Unfortunately, DICE is ineffective against touts in this regard. If an individual buys several tickets, there is nothing tying these to individuals, and so they can be resold.
+
+Automation of the ticket purchasing process attacks the same vulnerability, and the reCAPTCHA test used by Ticketmaster and others is duct tape over a deeper problem. A system that is vulnerable to bots is also vulnerable to humans, if to a lesser extent. Limiting the number of tickets that can be purchased per transaction is another smoking gun, and has only resulted in touts using multiple credit cards. The only way to truly fix these two issues is to address the transferability problem.
+
+The entire reselling industry only exists because tickets are, in practice, transferable. Twickets is well-intentioned, but does not address the root of the problem. It should not be possible for tickets to go near a secondary ticketing site, as touts are under no obligation to use a benevolent one. Therefore, the solution of for an identity to be tied to a ticket, and validated on entry to the venue. The validation is key; no amount of security will help if it is looking the other way.
+
+\subsection{Reallocation}
+
+Ticket reallocation occurs when an individual with a ticket wants to return it for a refund. DICE made the key design decision to not allow the purchaser any say in who returned tickets go to. By simply returning tickets to a pool, a tout cannot resell a ticket, as they have no control over who receives it. In a system that identified every ticketholder, this would be a useful property, however unfortunately, due to the aforementioned issue with only validating the purchaser's identity, it is redundant for DICE. As tickets are nameless, a tout can replace those he lets in as many times as he likes before the event. 
+
+\section{Notable Features}
+
+In addition to properties directly related to the prevention of touting, it is useful to observe other issues with and successes of these systems.
+
+\subsection{Purchase Timeout}
+
+The concept of entering a minimal set of details, then having a fixed amount of time to complete the purchase is very useful. It levels the playing field, meaning people are not pelanised for being slow at typing or mis-entering payment information. It also reduces the amount of time users are under pressure for, without hindering competition, leading to a more pleasant ordering experience.
+
+\subsection{Stability}
+
+The almost universal inability for sites to stay available during large ticket releases has become almost comical. Since the early days of cloud computing, there has been no excuse for being unable to handle demand. Any ticket vendor that meets the seemingly straightforward criterion of staying online would already be ahead of the competition.
+
+\subsection{Group Entrance}
+
+Due to the way paperless tickets work, all members of a group must enter the venue at once. While not broken entirely, this can cause serious inconvenience if one person in a large group is running late. A secondary issue here is that of gifted tickets. As the payment card is effectively the ticket, it is not possible to buy tickets for two friends to attend an event on their own. Each person in a group should be able to enter the venue in their own right. This should not be a challenging requirement if each ticket is individually tied to a person.
+
+\subsection{Fees}
+
+Fees are one of the most disliked properties of existing systems, yet one of the easiest to fix. It is clear that current fees are not related to their label, the most obvious example being Ticketmaster charging for delivery of tickets sent via email. Customers know they are used to maximise revenue while keeping the perceived price of tickets as low as possible.
+
+Removing these fees is obviously the ideal, but a more pragmatic solution would be to include them in the ticket price, so buyers see a single value. This would be more popular with customers, as it is more honest. The increase in face value will not put people off or leave a sour taste nearly as much as a list of questionable charges. DICE got this right by showing no fees to purchasers, and buyer perception is amongst the highest of any distributor.
+
+
+%now enable appendix numbering format and include any appendices
+\appendix
+\begin{appendices}
+
+%\chapter{Proposal}
+%Here's my project proposal.
+
+\iffalse
+\begin{landscape}
+\chapter{Ticket Fees}
+\label{appendix:ticket_fees_graph}
+
+\begin{table}[ht]
+\centering
+\tiny
+\begin{tabular}{lllllllll}
+\hline
+Event                    & Date       & Venue                      & Vendor             & Ticket & Service Charge & Processing Charge & Shipping Charge & Building Facility Charge \\ \hline
+Hans Zimmer Live On Tour & 2016-04-07 & SSE Arena, Wembley, London & Ticketmaster       & £65    & £7             &                   & £2.95           & £1                       \\
+Muse                     & 2016-04-03 & The O2, London             & Ticketmaster       & £65    & £6.50          &                   & £5.95           & £1.50                    \\
+You Me At Six            & 2015-02-10 & LG Arena, The NEC          & The Ticket Factory & £29    & £4.30          & £2.55             & £0              &                          \\
+Papa Roach               & 2013-12-03 & O2 Academy, Birmingham     & The Ticket Factory & £20    & £2.20          & £2.50             & £4              &                          \\
+Thirty Seconds to Mars   & 2013-11-05 & The NIA, Birmingham        & The Ticket Factory & £29.50 & £3.25          & £2.50             & £0              &                          \\ \hline
+\end{tabular}
+\caption{Fees charged at music events across a range of venues from 2013-2016}
+\end{table}
+\end{landscape}
+\fi
+
+\chapter{API Reference}
+\label{appendix:api_reference}
+
+Methods, parameters and return values for the Equaliser API.
+% TODO
+
+\chapter{Source Archive}
+\label{appendix:source_archive}
+
+Here's what's included and how to run it.
+% TODO
+
+\end{appendices}
+
+\cleardoublepage  % http://tex.stackexchange.com/a/23503
+\addcontentsline{toc}{chapter}{Bibliography}
+%\nocite{*} % can add back in to trivially increase page count
+\printbibliography
+
+\end{document}
