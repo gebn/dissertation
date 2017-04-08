@@ -156,6 +156,58 @@ Analysis of the current state of the art with regard to ticket touting provided 
     \item No subsystem should have a single point of failure.
 \end{enumerate}
 
+\chapter{Practical Design}
+
+My task was now to design a system, using the requirements in the previous chapter as non-negotiables. Even with a set of requirements, it is difficult to know where to start designing a system. Ticket distribution is not particularly large, but the human aspect meant there was nowhere to hide: if the design was flawed, it would be no better than any other solution on the market.
+
+\section{Entrance}
+
+I decided to start by focusing on the process by which ticketholders would gain access to a venue, as controlling this is ultimately the main purpose of the system. If at all possible, I wanted this to be completely automatic, with no human verification needed. This would remove any chance of human error or corruption, while making my solution more attractive to venues, who would not have to hire as many staff.
+
+To make this work, I knew I would have to produce a token that could only be used by its rightful owner to enter a venue. At first, I considered payment cards, for the reason that many experts have already put a lot of effort into making these secure. If possible, I wanted to stand on their shoulders. Unfortunately, this had two key problems.
+
+\begin{enumerate}
+    \item In a group scenario, only the original purchaser necessarily has a payment card on file. As the system would not know about the cards of anyone else in the booking, they would have to enter the venue together, which was a direct violation of the requirements.
+    \item Requiring each individual to have a payment card on file is too draconian. Not everyone going to an Ed Sheeran concert is old enough to own a credit card, and it is unreasonable to require parents to give them to their children - and even then, there is only one copy of the card.
+\end{enumerate}
+
+This was clearly unworkable. By going through this process, I knew this token had to be something that everyone would have, preferably something they already had on them anyway for convenience. The most obvious choice was a mobile phone, which has the added benefit that I could put arbitrary data on it to act as a ticket. It is trivial to send this data via the internet, and as phones have a screen, they can display this data however I liked, which could be the same as existing ticket barcodes so no changes to barriers at venues would be required.
+
+I quickly thought of a handful of ways that a barcode could be displayed on a phone securely. It could be a hash of some key material unique to the user, such as an X.509 private key. An intermediate certificate authority could be created for each event, that would sign requests for tickets. If a refund was initiated, the ticket could be revoked and so on. To make tickets difficult to copy, the key material could be hashed with a timestamp every 30 seconds, and an animation could be displayed to make it difficult to screenshot. This was not perfect, but I was reasonably confident of being able to tie a ticket to a phone.
+
+Unfortunately, it was all for nothing. It is one thing to tie a ticket to a phone, but it is quite another to ensure the person who shows up with a phone is its true owner. Any number of security features is irrelevant if a tout can simply give a phone containing a ticket to someone else. Indeed, touting is so lucrative that one could quite easily buy 10 or 100 pay-as-you-go phones and include the cost of the phone in the price of the ticket, and still make a tidy profit. This problem turned out to be much harder than initially thought.
+
+At first, I considered forcing the user to enter a passcode, however I realised the challenge cannot be based around knowledge, as that can be communicated to someone else. Similar to the ideas behind two-factor authentication, it requires something you have, not something you know. I then looked into biometrics, for example using a fingerprint to reveal the barcode for a few seconds at the barrier. This had four issues.
+
+\begin{enumerate}
+    \item Although becoming more prevalent, many phones are not equipped with fingerprint readers. Relying on them would require a two-lane system where those with less-able phones would queue. Any malicious actors would simply use the weaker option.
+    \item Even amongst phones with the technology, they do not always function correctly. A 1\% mis-read rate equates to 900 people in Wembley Stadium.
+    \item The phone is literally in the hands of the attacker, and biometrics fundamentally trust the phone's technology. Ideally, we only want to have to trust what is under our control.
+    \item On iOS, applications receive a boolean response to a fingerprint scan. They cannot identify who a fingerprint belongs to, so an attacker could simply register a fingerprint of whoever bought a touted ticket.
+\end{enumerate}
+
+I decided the technology was neither secure nor reliable enough to use. I also considered photographs, which could be recognised at the barrier, but again the technology is not accurate enough.
+
+Disheartened that phones alone did not seem to provide a secure option, I changed to using it in combination with another piece of identity. I briefly revisted credit cards as a possible option, particularly because they are not something given to a stranger lightly, but at the same time touts are known to own many cards, and could make buyers pay a deposit for the duration of an event. Passports seemed to be more promising, however they are almost too valuable. I found it difficult to come up with a document that was private enough to be worth validating, but not so private as to worry genuine purchasers. Thefts are common at concerts, and would be even more so if thieves knew everyone in attentance had a credit card, smartphone and passport on them.
+
+Photocards and Oyster cards initially seemed to be an answer. They are difficult enough to get hold of and a pain to replace, however they are bespoke to each country (in the case of Oyster, a single city), and sometimes genuine copies look fake. The real issue was they are trivially easy to photocopy, and many countries, such as Germany, do not allow non-govermental organisations to use national identity cards [CITE]. Any automated system is vulnerable to forgeries. Without a human present, to check each document, we cannot really do anything about this.
+
+\subsection{Manual Verification}
+
+Regretfully, I resigned to having humans present at the turnstiles to verify attendees. Passport gates at the UK border still require a human to confirm access. If even these are not entirely automatic, when in complete control of the physical token (the passport), the chances are I would not be able to come up with a secure solution either. This was a disappointment, but no worse than the current paperless system.
+
+To reduce the likelihood of staff intimidation, it could be done in a similar fashion to passport gates, where staff are kept physically separate from the people they are allowing through. To limit potential issues of corruption, where a member of staff lets their friends through, two controllers could manage several lanes, with individual requests for entry being randomised between them, so there was no guarantee of being confirmed by a single person. Regardless, this has the benefit of not requiring one employee per lane into the venue, so the increase in cost is not as substantial as I thought.
+
+My attention then turned back to the exact checks to perform. Photos were showing the most promise, and humans are good at comparing faces, so I revisited this idea. I envisaged a system where users would upload a photograph of themself during registration, which would be shown alongside the barcode. A human would then ensure the person in front of them matched, and allow them through.
+
+Photos would have to be vetted to make sure they were appropriate, however this could be done automatically to some extent. Facial recognition could be used to verify that one and only one face appeared in the image, and it was of appropriate size. Ultimately, such a mechanism may need a human to confirm, however this would only have to be done once per person. Of course, the photo would have to be verified before any tickets were allocated, and could not be changed at will. Any updates would have to be approved to ensure the person in the photo was the same. Ticketmaster has a similar verification system for the case where the payment card expires before an event.
+
+I was happy with all of this, apart from the photo existing on the user's phone, which felt dangerous; as already mentioned, the phone is in the hands of Mallory. To remove this dependency, instead of showing the photo on the phone, when the barcode was scanned, the system would show the photograph on file next to the attendee, then the member of staff would simply accept or reject entry. This had the nice property that all ticket material on the phone need no longer be secure, as even armed with another person's ticket, it would not be possible to pass the visual check (identical twins notwithstanding, but they are unlikely to tout to each other). Not relying on any phone security is a nice assumption to be able to make. There was no longer any value in screenshotting someone else's phone, so I would not have to put lots of effort into trying to prevent this.
+
+The outcome was realising the phone is effectively reduced to a pointer to a person, like a user ID. To remove the possibility of attackers iterating through all users, finding people who looked similar to each other, the token could be long and random, so it is infeasible to explore the space of all users.
+
+Therefore, in summary, when a user registers, they upload a clear photo of themselves. They have a single ``ticket'' for all events, which is unique to them. Upon scanning this data at the ticket barrier, their profile is retrieved, and automatically checked to see whether they have a valid ticket for the event. If they do, a member of staff compares the photo on file with the person who has shown up. If they match, the person is allowed in. A given person is only allowed in once. As tickets in themselves are useless for entry, they cannot be touted. Even changing the barcode is unlikely to point to another user, and even if it does collide, the chances are astronomically small that they will look like the attacker, or have a ticket. Tokens could also be regenerated regularly completely automatically, without users noticing.
+
 %now enable appendix numbering format and include any appendices
 \appendix
 \begin{appendices}
