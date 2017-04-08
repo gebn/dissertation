@@ -208,6 +208,19 @@ The outcome was realising the phone is effectively reduced to a pointer to a per
 
 Therefore, in summary, when a user registers, they upload a clear photo of themselves. They have a single ``ticket'' for all events, which is unique to them. Upon scanning this data at the ticket barrier, their profile is retrieved, and automatically checked to see whether they have a valid ticket for the event. If they do, a member of staff compares the photo on file with the person who has shown up. If they match, the person is allowed in. A given person is only allowed in once. As tickets in themselves are useless for entry, they cannot be touted. Even changing the barcode is unlikely to point to another user, and even if it does collide, the chances are astronomically small that they will look like the attacker, or have a ticket. Tokens could also be regenerated regularly completely automatically, without users noticing.
 
+\section{The Event Hierarchy}
+
+At this stage, I started confusing myself. ``event'' could refer to ``Wimbledon'', ``Wimbledon 2017'', ``Wimbledon 2017, Day 1'', or ``Wimbledon 2017, Day 1, Centre Court''. Some more accurate vocabulary was needed to avoid ambiguity.
+
+\begin{description}[style=nextline]
+    \item[Tiers] A type of ticket for a single performance, e.g. \textit{Standing}, \textit{Stalls}, or \textit{Debentures}. A tier has an associated price, availability and returns policy (always, or only if the ticket can be reallocated). It may or may not have a seat allocation.
+    \item[Fixtures] Generally, a fixture will match the duration of a ticket's validity, e.g. \textit{UKNOF 38} or \textit{Wimbledon 2017, Day 4, Centre Court}. Fixtures have a designated venue, and one or more tiers.
+    \item[Series] Fixtures combine to form series, which are collections of experiences, usually over no more than a couple of months. Examples include \textit{Glastonbury 2017}, \textit{Derren Brown: Svengali}, and \textit{Ed Sheeran: X Tour}. Their start and end dates can be derived from the fixtures within them.
+    \item[Headlines] I considered this final tier to contain series, however they were ultimately not implemented, in favour of tags instead. Examples would have been \textit{Wimbledon} and \textit{6 Nations}.
+\end{description}
+
+I wanted the system to be able to handle as many types of event as possible, so generic terminology was needed. However, it need not be exhaustive. If a new type of event that does not fit the above structure came along, I decided it could adapt and, if necessary, abuse it to fix its needs. Ticketmaster is a frequent culprit in this regard.
+
 %now enable appendix numbering format and include any appendices
 \appendix
 \begin{appendices}
