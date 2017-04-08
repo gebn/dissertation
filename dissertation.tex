@@ -12,6 +12,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[toc,page]{appendix}
 \usepackage{lipsum}
+\usepackage{enumitem}
 
 \titleformat{\paragraph}{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
@@ -108,6 +109,52 @@ Fees are one of the most disliked properties of existing systems, yet one of the
 
 Removing these fees is obviously the ideal, but a more pragmatic solution would be to include them in the ticket price, so buyers see a single value. This would be more popular with customers, as it is more honest. The increase in face value will not put people off or leave a sour taste nearly as much as a list of questionable charges. DICE got this right by showing no fees to purchasers, and buyer perception is amongst the highest of any distributor.
 
+\chapter{Requirements}
+
+Analysis of the current state of the art with regard to ticket touting provided a ruler by which to measure any new ticket system. By flipping this on its head, I hoped to use these metrics to design core requirements for a perfect system. Many more requirements would emerge during the practical design, however they were not perceived in advance, simply because no system so far was able to offer a complete solution to ticket touting.
+
+\section{Functional}
+
+\begin{enumerate}
+    \item Users should be able to return a ticket for a refund.
+    \begin{enumerate}
+        \item This should be permitted outright, or only if the system can reallocate those tickets to someone in the waiting list, so no revenue is lost.
+    \end{enumerate}
+    \item Direct ticket transfers between individuals should not be permitted. User A should not be able to give their ticket to User B, as we cannot prevent money from changing hands outside of the application.
+    \begin{enumerate}
+        \item Unwanted or refunded tickets should be returned to a pool of available tickets.
+    \end{enumerate}
+    \item Users should only have to enter a minimum number of details before their tickets are reserved, or they enter the waiting list.
+    \item Venue staff must be able to revalidate a ticket and verify an attendee's identity inside the venue.
+    \item Two-factor authentication should be mandatory for login.
+\end{enumerate}
+
+\subsection{Groups}
+
+\begin{enumerate}[resume]
+    \item Each ticket in a group booking must be tied to a registered user at the point of order.
+    \item Each attendee in a group should be able to enter the venue individually on their own merit.
+    \item A group leader must be able to specify that some members in a group should pay for their own tickets.
+\end{enumerate}
+
+\subsection{Gifts}
+
+\begin{enumerate}[resume]
+    \item A user should be able to purchase tickets for others.
+    \item They should be able to individually specify when those tickets should become visible to the giftees.
+    \item The gifter should be able to attach a message to each gifted ticket that will be displayed when it is revealed to the giftee.
+    \item The gifter can refund a ticket before it is released to the giftee, after which only the giftee can refund it.
+    \item The original purchaser is always refunded the cost of the ticket, even if a giftee initiates a refund.
+\end{enumerate}
+
+\section{Non-functional}
+
+\begin{enumerate}[resume]
+    \item The system must partner with event organisers to be the one and only distributor of tickets. Only tickets issued by the system and verified by staff upon entry should be accepted.
+    \item Fees should be included in the cost of the ticket.
+    \item The ordering system should be able to support 500,000 simultaneous users.
+    \item No subsystem should have a single point of failure.
+\end{enumerate}
 
 %now enable appendix numbering format and include any appendices
 \appendix
