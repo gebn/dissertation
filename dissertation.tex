@@ -62,21 +62,21 @@
 
 \chapter{Mining properties of existing systems}
 
-The insights in this section are based squarely on the whitepaper \autocite{B17} I produced earlier in the project. It is clear that there is currently no complete solution to the problem of touting. This section qualitatively analyses the research in the previous section to identify attributes that are conducive and resistant to touting, and other notable features whose absence or presence would enhance a future ticket distribution system.
+The insights in this section are based on a whitepaper \autocite{B17} I produced earlier in the project on the current state of the ticketing industry. It is clear that there is currently no complete solution to the problem of touting. This section qualitatively analyses the research in the paper to identify attributes that are conducive and resistant to touting, and other notable features whose absence or presence would enhance a future ticket distribution system.
 
 \section{Single Distributor}
 
-In the very first paragraph of the previous summary, the fact that event organisers use multiple distributors is an issue. This would allow any protections offered by a perfect system to be circumvented by a vulnerable one. Malicious actors would simply use the latter. DICE identified this issue, and plugged the hole by making themselves the exclusive distributor of tickets for a given event. If two systems existed in future that were secure in isolation, using them together could introduce potential issues or opportunities for confusion, so in practice, one distributor should be used.
+Event organisers using multiple distributors is clearly an issue, as it allows any protections offered by a system to be circumvented by a vulnerable one. Malicious actors would simply use the latter. DICE identified this issue, and plugged the hole by making themselves the exclusive distributor of tickets for a given event. If two systems existed in future that were secure in isolation, using them together could introduce potential issues or opportunities for confusion, so in practice, one distributor should be used.
 
 Box offices are inherently at odds with this observation on several levels. If a venue's box office is to be its sole distributor of tickets, using a separate system for each venue would be a great inconvenience to fans and event organisers. If we make the reasonable assumption that a box office alone cannot handle the demand for tickets, then another distributor is needed, which means the box office must be removed to maintain the single source. Unfortunately, from a touting prevention perspective, box offices are pointless at best, and a subversive side-channel attack at worst.
 
 \subsection{Conflict of Interest}
 
-Given the rule of a sole distributor, companies will compete to win the business of being that distributor. To differentiate themselves, these firms can highlight the rate at which they sell tickets, and the total number of tickets sold, which may conflict with ensuring those tickets go to genuine fans. This can only be solved by removing all metrics related to the rate of ticket sales from a distributor's fee calculation. They should receive a set fee that is agreed in advance and independent of the number of tickets sold. Promotion must be distinct from processing.
+Given the rule of a sole distributor, companies will compete to win the business of being that distributor. To differentiate themselves, these firms can highlight the rate at which they sell tickets, and the total number of tickets sold, which may conflict with ensuring those tickets go to genuine fans. This can only be solved by removing all metrics related to the rate of ticket sales from a distributor's fee calculation. They should receive a fixed payment that is agreed in advance and independent of the number of tickets sold. Promotion must be distinct from processing.
 
 \section{Ticket Transferability}
 
-Plain paper tickets are inherently broken, as it is impossible to prevent a physical object from being transferred between two parties. Adding a name which is rarely validated does nothing to improve this situation. Paperless tickets were ostensibly introduced to combat this. The photo ID was an important improvement, however as already discussed, only the purchaser's identity is validated (if checked at all), leaving 3-7 tickets per credit card available for touting, and a tidy profit. Unfortunately, DICE is ineffective against touts in this regard. If an individual buys several tickets, there is nothing tying these to individuals, and so they can be resold.
+Paper tickets are inherently broken, as it is impossible to prevent a physical object from being transferred between two parties. Adding a name which is rarely validated does nothing to improve this situation. Paperless tickets were ostensibly introduced to combat this. The photo ID was an important improvement, however as already discussed, only the purchaser's identity is validated (if checked at all), leaving 3-7 tickets per credit card available for touting, and a tidy profit. Unfortunately, DICE is ineffective against touts in this regard. If an individual buys several tickets, there is nothing tying these to individuals, and so they can be resold.
 
 Automation of the ticket purchasing process attacks the same vulnerability, and the reCAPTCHA test used by Ticketmaster and others is duct tape over a deeper problem. A system that is vulnerable to bots is also vulnerable to humans, if to a lesser extent. Limiting the number of tickets that can be purchased per transaction is another smoking gun, and has only resulted in touts using multiple credit cards. The only way to truly fix these two issues is to address the transferability problem.
 
@@ -88,7 +88,7 @@ Ticket reallocation occurs when an individual with a ticket wants to return it f
 
 \section{Notable Features}
 
-In addition to properties directly related to the prevention of touting, it is useful to observe other issues with and successes of these systems.
+In addition to properties directly related to the prevention of touting, it is useful to note ways in which these systems are either suboptimal or successful.
 
 \subsection{Purchase Timeout}
 
@@ -96,7 +96,7 @@ The concept of entering a minimal set of details, then having a fixed amount of 
 
 \subsection{Stability}
 
-The almost universal inability for sites to stay available during large ticket releases has become almost comical. Since the early days of cloud computing, there has been no excuse for being unable to handle demand. Any ticket vendor that meets the seemingly straightforward criterion of staying online would already be ahead of the competition.
+The inability for ticket websites to stay available during large ticket releases appears to have become something of a requirement. Since the introduction of cloud computing several years ago, there has been no excuse for being unable to handle spikes in demand. Any ticket vendor that meets the seemingly straightforward criterion of staying online during a large release would already be ahead of the competition.
 
 \subsection{Group Entrance}
 
