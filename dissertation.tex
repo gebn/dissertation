@@ -1,4 +1,4 @@
-\documentclass[12pt]{bhamdissertation}
+\documentclass[12pt,a4]{bhamdissertation}
 
 %load any additional packages
 \usepackage[utf8]{inputenc}
@@ -60,6 +60,9 @@
 \end{acknowledgements}
 
 \end{romanpages}            % end roman page numbering
+
+\chapter{Introduction}
+% TODO
 
 \chapter{Mining properties of existing systems}
 
@@ -224,6 +227,133 @@ I wanted the system to be able to handle as many types of event as possible, so 
 \section{Etymology}
 
 I was now beginning to see the system's role more clearly, and decided to call it \textit{Equaliser}. This had the nice property of applying to many different events, similar to the system, e.g. a mixing equaliser in the context of music, or an equaliser in a tennis match. I also saw it as a way f getting equal with touts.
+
+\section{Ordering}
+
+I now had some requirements for the registration process, and a robust way to ensure only those with valid tickets could enter a venue. Now I needed to work out how to join these two together, i.e. how registered users could obtain tickets.
+
+\subsection{Individuals}
+
+I decided to tackle the case of an individual attending a fixture alone first, as it does not involve the co-ordination required for groups. The initial stages of this practically designed themselves:
+
+\begin{enumerate}
+    \item The user chooses the series, fixture and tier they are interested in.
+    \item The user submits this order.
+    \item If a ticket is not available for that tier, the user enters the queue and waits until it is available.
+    \item If and when the ticket becomes available, the user is alerted and has a set amount of time to pay; if payment is received within this time, the ticket is delivered to their phone, otherwise their order is cancelled.
+\end{enumerate}
+
+I decided to allow up to 30 minutes between 9am and 9pm for payment, with the potential for a shorter window as the event gets closer or the waiting list longer. If a ticket becomes available outside these times, it expire at 9:30am. If a ticket expires, the user could be sent to the back of the queue, but there is no guarantee that they will not miss it again, so rather than have them cycle through the queue, it is clearer to cancel their order. Anyone who truly wants to attend would not miss their chance to pay for their ticket.
+
+\subsection{Fees}
+
+Transactions made through the online shop will be paid into Equaliser's bank account. Event organisers will receive their majority share of that as agreed, with the venue also receiving a cut. It is no hardship to negotiate these fees, as the venue, event organiser and Equaliser already have to partner to prevent other ticket distributors allowing Equaliser to be bypassed.
+
+\subsection{Waiting List}
+
+The fact that a ticket may not be available immediately complicates things, but Equaliser would be fairly useless if it could not handle this situation. Tickets may become available either through refunds, or if ticket release is staggered. Intuitively, as tiers can sell out individually, I envisaged one waiting list per tier, however after deliberation, I found some subtle problems.
+
+\begin{enumerate}
+    \item A user may not care what tier they receive; they may just want to attend the event at all costs, i.e. any tier. With one waiting list per tier, the only way to implement this would be to allow the user to be in multiple queues. It is fundamentally wrong to have a single user with two tickets, so this would introduce concurrency challenges to ensure they only receive one ticket, should they happen to be at the front of two waiting lists simultaneously.
+    \item If an order is placed at the tier level, a user would have to place one order per tier, which is outrageous from a user-experience perspective, and makes it much harder to keep track of attendees and ensure no one receives two tickets.
+\end{enumerate}
+
+For these reasons, I decided instead to have one waiting list per fixture. Anyone who wanted sold out tickets would join this waiting list, and be able to indicate not only what tiers they were interested in, but also their order of preference, for example an individual may choose to accept tickets for either dress circle or stalls tickets, with a preference for the stalls if both become available at the same time.
+
+The allocation algorithm starts by finding what tiers are available, and how many tickets in each. It then walks down the queue, querying each person's order. If it can satisfy the demand, it makes the individual an offer, before decrementing the number of tickets for the fulfilled tier. Most importantly, in order to remain fair, the algorithm must not be able to discover new tickets mid-execution (as people already passed over may have wanted those tickets); it instead has to run periodically.
+
+I considered giving users an indication of their position in the waiting list, either an absolute number, or estimated time to the front, however this could encourage abuse. Although contrived, a tout knowingly at the front of the queue could demand money for dropping out if they knew someone was behind them. In fact, it is difficult to provide any sort of metric that is no exploitable. The queue must behave like a dark pool in trading.
+
+\subsection{Refunds}
+
+Payment is not taken until an offer of a ticket is accepted. There are two refund policies offered by the system:
+
+\begin{description}
+    \item[Always] Refunds are always accepted and processed immediately.
+    \item[Reallocate] Refunds are only processed when the system can give the ticket to someone else, in order to protect the event organiser's revenue. New tickets will always be used to fulfil demand before returned ones, therefore refunds that fall into this policy will only be accepted if there is a waiting list for the tier.
+\end{description}
+
+I considered a third option, \textit{never}, however there is little reason for this over \textit{reallocate} from any stakeholder's perspective. It would not affect the event organiser, as they receive the revenue either way, and it would be worse for the performer, as someone would be forced to attend (or not attend) who did not want to go.
+
+\subsection{Groups}
+
+Now that single tickets were worked out, I attacked the issue of scaling this to groups, which meant revisiting all of the challenges I went through to handle individuals. This was a deliberate decision, as the leap from nothing to groups would have been somewhat overwhelming.
+
+\begin{itemize}
+    \item Groups need to be treated as an individual unit of allocation. They cannot complete checkout in isolation, as there would be no guarantee of everyone succeeding in receiving a ticket.
+    \item There is the concept of gifts, where it is not always simple to indicate or represent who pays for who, which is compounded in the case of refunds.
+    \item As per the requirements, at no point can one person own multiple tickets, however this is at odds with the concept of a single order.
+\end{itemize}
+
+I was glad to have a solid foundation in the form of single orders to adapt. I found it much easier to keep something working and expand on it rather than handle so many more variables.
+
+First, I had to decide whether to impose a limit on the number of tickets that could be ordered as a group. Existing systems impose an upper bound to prevent abuse, however given ticket transfers are prohibited, there is no advantage to constraining the size of a group. It was noticeable how properly solving this core problem meant I was able to strip out many workarounds and duct tape like this that had been applied to other systems. Spending time on a few key decisions had saved a vast amount of complexity.
+
+\subsubsection{Ordering Process}
+
+% order individually
+Next, I had to ensure all members of a group received tickets at the same time, or not at all. My first attempt involved people explicitly defining dependencies when making an order, for example person A specifies that they only want a ticket if persons B and C also get one; person B specifies they only want one if A and C receive one and so on. There were two key issues with this system:
+
+\begin{enumerate}
+    \item If everyone is forced to buy a ticket individually, they would have to co-ordinate seat selection and so on, all while others are doing the same. The chances of frustration are high, especially for popular events.
+    \item It could be very complicated to calculate the dependencies when doing the allocation, particularly if the graph of members is not fully connected.
+\end{enumerate}
+
+% one on behalf of group
+More simply, this method was just too complicated to ask users to understand, and would cause too many errors. I needed something more high-level and intuitive, and quickly realised the only sane way of doing this involved one person placing an order on behalf of the entire group. In the case of fixed seating, this would make it much easier to allocate a contiguous block of seating, and also creates a simple blob for the allocation system to fulfil or ignore. Having one person in charge also reduces confusion in case of issues, and also load on the system. There is no advantage to everyone in a group simultaneously trying to buy tickets to increase the likelihood of ``getting through''.
+
+% now an issue of ownership; can associate with people at time of order
+The issue with this was that of a single person owning many tickets. I needed a way to distinguish between someone genuinely purchasing tickets for friends, and someone who buys with the intention of touting. It took me far too long to realise that the key difference, and what is exploitable here, is that the person buying tickets for friends knows who those people are at the point of purchase. Whoever placed the order could enter friends' details, set who they wanted to pay for, and never be in control of any distribution.
+
+% enter after offer received? no, before
+To maintain the property of minimising the amount of information required before a user can join the waiting list, at first I decided to allow the group leader to enter names of attendees after an offer has been received. However, if a user had already purchased a ticket, this would mean it was not detected until after purchase, and secondly it would give touts a window to advertise that they had received tickets and solicit buyers. I realised it is more subtle and stricter than a genuine buyer knowing attendees at the point of purchase; to prevent the above, a buyer would have to specify who would attend before even knowing whether they had tickets. Therefore, in order to place an order, the group leader specifies a tier and a list of attendees, all of whom must already be registered with a validated photo. This is so the ticket cannot be touted and the buyer's photo added later. As part of the order processing workflow, a check would be made to ensure no users already had an active order for the fixture, to avoid the issue of multiple tickets per user.
+
+\subsubsection{Waiting List}
+
+Groups can share the current waiting list for individuals. Instead of allocating a single ticket, the algorithm simply passes over the group until a sufficient number are available. There are two potential issues here.
+
+\begin{enumerate}
+    \item If the amount of time between allocations is too short, not enought tickets will have accumulated to fulfil larger orders. A group of 8 at the front of the queue may never be served if the average rate of return is 8 tickets per minute, and the algorithm runs once every 30 seconds.
+    \item It can be assumed that in the case of reserved seating, groups will want to sit together.
+\end{enumerate}
+
+To solve the first issue, the allocation algorithm could potentially analyse the rate of ticket returns, and determine whether it can wait long enough to fulfil a large order, e.g. if 1 ticket is returned every minute, it could wait 5 minutes to fulful an order of 5. There would have to be a threshold on this to ensure turnover in the queue. Certainly, it should never be the case that smaller groups are not able to attend because the allocator is causing a log jam to satisfy a large group.
+
+The second issue is made more complicated by the fact that existing orders cannot be moved around. All that can be done here is for the allocator to group tickets where possible (e.g. seats C23 and C24 would be a pair). It would then sort the size of these groups in ascending order, and starting at the front of the queue, try to find the smallest block size that would satisfy the order. This algorithm could be adapted depending on the type of seating available. The clear downside is that it would require detailed and accurate plans of all venues with reserved seating.
+
+\subsubsection{Payment}
+
+The final issue is that of payment, which also implicates gifted tickets. As one person places the order, my initial idea was to have them pay for everyone for simplicity, then when a friend confirms the purchase, charge their payment card for the amount for their ticket, and do a partial refund for the buyer. Taking a step back, I realised this was again far too convoluted, and it is unreasonable to expect the buyer to be out of pocket, or even have enough money in their account for everyone if they only want a single ticket. There is also the issue of what happens if someone rejects their ticket. I definitely wanted to remove refunding from the normal payment workflow, as it incurs additional card processing fees.
+
+To address all of these problems, I created a solution based on the idea of delegating responsibility for payment. A user wants to order $t$ tickets, of which $o$ are for other people, with $g$ of those gifted. $t - o$ will be $0$ if the group leader is not attending, or $1$ if they are. They will pay for $(t - o) + g$ tickets, with $o - g$ others paying for their tickets individually. Example scenarios include:
+
+\begin{itemize}
+    \item A user orders a ticket for himself.
+    \begin{itemize}
+        \item $t = 1, o = 0, g = 0$
+        \item User pays for $(1 - 0) + 0 = 1$ ticket
+    \end{itemize}
+    \item A user orders a ticket for herself and 4 friends.
+    \begin{itemize}
+        \item $t = 5, o = 4, g = 0$
+        \item User pays for $(5 - 4) + 0 = 1$ ticket
+    \end{itemize}
+    \item A user orders a ticket for himself and 4 friends, 2 as gifts.
+    \begin{itemize}
+        \item $t = 5, o = 4, g = 2$
+        \item User pays for $(5 - 4) + 2 = 3$ tickets
+    \end{itemize}
+    \item A user orders 2 tickets for her children, both as gifts.
+    \textit{N.B. she is not attending the event.}
+    \begin{itemize}
+        \item $t = 2, o = 2, g = 2$
+        \item User pays for $(2 - 2) + 2 = 2$ tickets
+    \end{itemize}
+\end{itemize}
+
+I intuitively saw several roles emerging here. An order consisted of a set of transactions, with each of those transactions paying for one or more tickets. The total number of transactions for an order will be $t - g + (1 - (t - o)) = o - g + 1$. A transaction's payee may not even be paying for his own ticket.
+
+% TODO state diagram of entire system
 
 %now enable appendix numbering format and include any appendices
 \appendix
