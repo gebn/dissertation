@@ -1,8 +1,8 @@
 all:
-	pdflatex dissertation.tex
+	pdflatex -shell-escape dissertation.tex
 	biber dissertation.bcf
-	pdflatex dissertation.tex
-	pdflatex dissertation.tex
+	pdflatex -shell-escape dissertation.tex
+	pdflatex -shell-escape dissertation.tex
 
 clean:
 	rm -f *.aux *.bbl *.bcf *.blg *.lof *.log *.out *.toc *.xml
